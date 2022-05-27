@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course
+from .models import Course, Article
 from django.contrib.auth.models import User
 
 
@@ -22,4 +22,12 @@ class UserSerializers(serializers.ModelSerializer):
             "is_active",
             "is_superuser",
         )
+
+
+class ArticleSerializers(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+        # exclude = ("created", "updated")
+
 

@@ -22,6 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ArticleListView(ListView):
     template_name = './blog/article_list.html'
+
     def get_queryset(self):
         return Article.objects.all()
 

@@ -24,10 +24,10 @@ class UserSerializers(serializers.ModelSerializer):
         )
 
 
-class ArticleSerializers(serializers.HyperlinkedModelSerializer):
+class ArticleSerializers(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = '__all__'
-        # exclude = ("created", "updated")
+        # fields = '__all__'
+        exclude = ("created", "updated")
 
 

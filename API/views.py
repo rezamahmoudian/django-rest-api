@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import CourseSerializers, UserSerializers
+from .serializers import CourseSerializers, UserSerializers, ArticleSerializers
 from .models import Course
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
+from rest_framework.generics import ListCreateAPIView
 
 
 # Create your views here.
@@ -20,6 +21,13 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
 
+class ArticleListCreateAPIView(ListCreateAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializers
+
+
+# این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود
+# به همره مدل و url باید منتقل شوند
 class ArticleListView(ListView):
     template_name = './blog/article_list.html'
 

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
 # Create your views here.
@@ -26,6 +26,11 @@ class ArticleListCreateAPIView(ListCreateAPIView):
     serializer_class = ArticleSerializers
 
 
+class ArticleDetails(RetrieveUpdateDestroyAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializers
+
+
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود
 # به همره مدل و url باید منتقل شوند
 class ArticleListView(ListView):
@@ -33,4 +38,5 @@ class ArticleListView(ListView):
 
     def get_queryset(self):
         return Article.objects.all()
+
 

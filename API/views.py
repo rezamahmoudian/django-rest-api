@@ -40,3 +40,12 @@ class ArticleListView(ListView):
         return Article.objects.all()
 
 
+class UserDetail(RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+
+
+class UserListView(ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+

@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from .models import Article
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser
+from .permissions import IsSuperUser
 
 
 # Create your views here.
@@ -44,10 +45,10 @@ class ArticleListView(ListView):
 class UserDetail(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsSuperUser,)
 
 
 class UserListView(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsSuperUser,)

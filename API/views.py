@@ -8,7 +8,7 @@ from django.views.generic import ListView
 from .models import Article
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAdminUser
-from .permissions import IsSuperUser
+from .permissions import IsSuperUser, IsAuthorOrReadOnly
 
 
 # Create your views here.
@@ -31,6 +31,7 @@ class ArticleListCreateAPIView(ListCreateAPIView):
 class ArticleDetails(RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializers
+    permission_classes = [permissions.IsAdminUser, IsAuthorOrReadOnly]
 
 
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود

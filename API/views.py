@@ -7,8 +7,10 @@ from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffReadOnly
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -54,3 +56,10 @@ class UserListView(ListCreateAPIView):
     serializer_class = UserSerializers
     permission_classes = (IsSuperuserOrStaffReadOnly,)
 
+
+class RevokeToken(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def delete(self, request):
+        request.auth.delete()
+        return Response({"msg": "token revoked!"})

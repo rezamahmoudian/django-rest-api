@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from .views import CourseViewSet, UserViewSet
 from rest_framework_simplejwt import views as jwt_views
-from .views import ArticleListView, ArticleListCreateAPIView, ArticleDetails, UserListView, UserDetail
+from .views import ArticleListView, ArticleListCreateAPIView, ArticleDetails, UserListView, UserDetail, RevokeToken
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
@@ -20,5 +20,6 @@ urlpatterns = [
     path('user/', UserListView.as_view(), name='user-list'),
     path('user/<int:pk>', UserDetail.as_view(), name='user-detail'),
     path('api-token-auth/', views.obtain_auth_token),
+    path('revoke-token/', RevokeToken.as_view(), name="revoke-token"),
 
 ]

@@ -62,4 +62,4 @@ class RevokeToken(APIView):
 
     def delete(self, request):
         request.auth.delete()
-        return Response({"msg": "token revoked!"})
+        return Response(status=204)

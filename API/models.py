@@ -17,7 +17,7 @@ class Course(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField()
-    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     content = models.TextField()
     publish = models.DateTimeField(default=timezone.now())
     created = models.DateTimeField(auto_now=True)

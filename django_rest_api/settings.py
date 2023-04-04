@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     ### jwt ###
     'rest_framework_simplejwt',
+
+    'django_filters',
 ]
 SITE_ID = 1
 
@@ -146,7 +148,9 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
     ],
 }
 

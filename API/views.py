@@ -12,6 +12,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffReadOnly, IsStaffOrReadOnly
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 # Create your views here.
@@ -59,18 +60,37 @@ class ArticleDetails(RetrieveUpdateDestroyAPIView):
 
 
 class ArticleListApiView(ListAPIView):
+    queryset = Article.objects.all()
     serializer_class = ArticleSerializers
+    filter_backends = [DjangoFilterBackend]
 
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
-        queryset = Article.objects.all()
-        status = self.request.query_params.get('status')
-        if status is not None:
-            queryset = queryset.filter(status=status)
-        return queryset
+    # filter with status and author id
+    # filterset_fields = ['status', 'author']
+
+    # filter with status and username ---dosent work
+    # filterset_fields = ['status', 'author__username']
+    # filterset_fields = {
+    #     'status': ['exact'],
+    #     'author': ['exact', 'username']
+    # }
+
+    # a bad way for filter (Filtering against query parameters)
+    # def get_queryset(self):
+    #     """
+    #     Optionally restricts the returned purchases to a given user,
+    #     by filtering against a `username` query parameter in the URL.
+    #     """
+    #     queryset = Article.objects.all()
+    #     status = self.request.query_params.get('status')
+    #     if status is not None:
+    #         queryset = queryset.filter(status=status)
+    #
+    #     author = self.request.query_params.get('author')
+    #     if author is not None:
+    #         # queryset = queryset.filter(author=author)
+    #         queryset = queryset.filter(author__username=author)
+    #     return queryset
+
 
 
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود

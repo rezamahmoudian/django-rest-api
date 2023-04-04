@@ -13,7 +13,7 @@ from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffRead
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework import filters
 
 # Create your views here.
 class CourseViewSet(viewsets.ModelViewSet):
@@ -62,7 +62,7 @@ class ArticleDetails(RetrieveUpdateDestroyAPIView):
 class ArticleListApiView(ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializers
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
 
     # filter with status and author id
     # filterset_fields = ['status', 'author']
@@ -91,6 +91,7 @@ class ArticleListApiView(ListAPIView):
     #         queryset = queryset.filter(author__username=author)
     #     return queryset
 
+    search_fields = ['title', 'content', 'author__username', 'author__firs_name', 'author__last_name']
 
 
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود

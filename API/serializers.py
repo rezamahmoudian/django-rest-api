@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Course, Article
-from django.contrib.auth.models import User
-
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 class CourseSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -11,7 +11,7 @@ class CourseSerializers(serializers.HyperlinkedModelSerializer):
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = get_user_model()
         fields =(
             "id",
             "username",

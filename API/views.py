@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import CourseSerializers, UserSerializers, ArticleSerializers
 from .models import Course
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
@@ -30,7 +31,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
     permission_classes = [permissions.IsAdminUser]
 
@@ -56,13 +57,13 @@ class ArticleListView(ListView):
 
 
 class UserDetail(RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
     permission_classes = (IsSuperuserOrStaffReadOnly,)
 
 
 class UserListView(ListCreateAPIView):
-    queryset = User.objects.all()
+    queryset = get_user_model().objects.all()
     serializer_class = UserSerializers
     permission_classes = (IsSuperuserOrStaffReadOnly,)
 

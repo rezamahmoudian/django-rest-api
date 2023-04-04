@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 # from rest_framework.permissions import IsAuthenticated
 from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffReadOnly, IsStaffOrReadOnly
 # from rest_framework.views import APIView
@@ -18,6 +18,17 @@ from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffRead
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializers
+
+    # def get_queryset(self):
+    #     """
+    #     Optionally restricts the returned purchases to a given user,
+    #     by filtering against a `username` query parameter in the URL.
+    #     """
+    #     queryset = Course.objects.all()
+    #     status = self.request.query_params.get('status')
+    #     if status is not None:
+    #         queryset = queryset.filter(status=status)
+    #     return queryset
 
     def get_permissions(self):
         """
@@ -45,6 +56,21 @@ class ArticleDetails(RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializers
     permission_classes = [permissions.IsAdminUser, IsAuthorOrReadOnly]
+
+
+class ArticleListApiView(ListAPIView):
+    serializer_class = ArticleSerializers
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Article.objects.all()
+        status = self.request.query_params.get('status')
+        if status is not None:
+            queryset = queryset.filter(status=status)
+        return queryset
 
 
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود

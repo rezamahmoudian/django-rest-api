@@ -62,10 +62,18 @@ class ArticleDetails(RetrieveUpdateDestroyAPIView):
 class ArticleListApiView(ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializers
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
     # filter with status and author id
-    # filterset_fields = ['status', 'author']
+    filterset_fields = ['status', 'author']
+
+    search_fields = ['title', 'content', 'author__username', 'author__first_name', 'author__last_name']
+
+    ordering_fields = ['publish', 'status']
+    ordering = ['-publish']
+
+
+
 
     # filter with status and username ---dosent work
     # filterset_fields = ['status', 'author__username']
@@ -90,8 +98,6 @@ class ArticleListApiView(ListAPIView):
     #         # queryset = queryset.filter(author=author)
     #         queryset = queryset.filter(author__username=author)
     #     return queryset
-
-    search_fields = ['title', 'content', 'author__username', 'author__firs_name', 'author__last_name']
 
 
 # این ویوو باید در اپلیکیشن جداگانه ای مثلا اپ blog ایجاد شود

@@ -70,6 +70,7 @@ class ArticleListApiView(ListAPIView):
     search_fields = ['title', 'content', 'author__username', 'author__first_name', 'author__last_name']
 
     ordering_fields = ['publish', 'status']
+    # default ordering
     ordering = ['-publish']
 
 

@@ -1,19 +1,20 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import CourseSerializers, UserSerializers, ArticleSerializers
+from .serializers import CourseSerializers, UserSerializers, ArticleSerializers, AuthorSerializers
 from .models import Course
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from django.views.generic import ListView
 from .models import Article
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView
 # from rest_framework.permissions import IsAuthenticated
 from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsSuperuserOrStaffReadOnly, IsStaffOrReadOnly
 # from rest_framework.views import APIView
 # from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+
 
 # Create your views here.
 class CourseViewSet(viewsets.ModelViewSet):
@@ -73,9 +74,6 @@ class ArticleListApiView(ListAPIView):
     # default ordering
     ordering = ['-publish']
 
-
-
-
     # filter with status and username ---dosent work
     # filterset_fields = ['status', 'author__username']
     # filterset_fields = {
@@ -128,3 +126,13 @@ class UserListView(ListCreateAPIView):
 #     def delete(self, request):
 #         request.auth.delete()
 #         return Response(status=204)
+
+
+class AuthorRetrieveView(RetrieveAPIView):
+    queryset = get_user_model().objects.all()
+    # queryset = get_user_model().objects.filter(is_staff=True)
+    serializer_class = AuthorSerializers
+
+    # def get_queryset(self, **kwargs):
+    #     user = get_user_model().objects.filter(id=kwargs)
+    #     return user

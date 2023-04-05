@@ -4,7 +4,7 @@ from .models import Course, Article
 from django.contrib.auth import get_user_model
 
 
-class AuthorSerializers(serializers.ModelSerializer):
+class AuthorSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ("id", "username", "first_name", "last_name", "email")
@@ -23,7 +23,12 @@ class UserSerializers(serializers.ModelSerializer):
 
 
 class ArticleSerializers(serializers.ModelSerializer):
-    author = AuthorSerializers()
+    # author = AuthorSerializers()
+    # author = serializers.HyperlinkedRelatedField(many=True,
+    #                                              read_only=True,
+    #                                              lookup_field='pk',
+    #                                              view_name='api:author-detail')
+    author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
 
     class Meta:
         model = Article

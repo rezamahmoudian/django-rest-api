@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Course, Article
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 
 class AuthorSerializers(serializers.HyperlinkedModelSerializer):
@@ -25,7 +26,6 @@ class UserSerializers(serializers.ModelSerializer):
 class ArticleSerializers(serializers.ModelSerializer):
     # همه ی اطلاعات کاربر انتخاب شده در سریالایزر را نمایش میدهد
     # author = AuthorSerializers()
-
     # این برای نمایش فیلد های چندتایی است و چون نویسنده هر مقاله یکنفر است نمیتوان از ان استفاده کرد
     # author = serializers.HyperlinkedRelatedField(many=True,
     #                                              read_only=True,
@@ -33,9 +33,14 @@ class ArticleSerializers(serializers.ModelSerializer):
     #                                              view_name='api:author-detail')
     # بعنوان کلید در url به اشتباه آیدی مقاله را میدهد نه آیدی نویسنده ی مقاله پس وارد پروفایل نویسنده نمیشود
     # author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
-
     # نمایش یوزر نیم نویسنده برای فیلد author
-    author = serializers.CharField(source='author.username', read_only=True)
+    # author = serializers.CharField(source='author.username', read_only=True)
+
+    # نمایش اطلاعت نویسنده با serializermethodfield ک بهترین روش است چون میتوان همه ی روش های بالا را با آن انجام داد
+    def get_author(self, obj):
+        return obj.author.username
+    author = serializers.SerializerMethodField("get_author")
+
     class Meta:
         model = Article
         # fields = '__all__'

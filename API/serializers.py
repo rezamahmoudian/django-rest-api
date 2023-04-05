@@ -23,13 +23,19 @@ class UserSerializers(serializers.ModelSerializer):
 
 
 class ArticleSerializers(serializers.ModelSerializer):
+    # همه ی اطلاعات کاربر انتخاب شده در سریالایزر را نمایش میدهد
     # author = AuthorSerializers()
+
+    # این برای نمایش فیلد های چندتایی است و چون نویسنده هر مقاله یکنفر است نمیتوان از ان استفاده کرد
     # author = serializers.HyperlinkedRelatedField(many=True,
     #                                              read_only=True,
     #                                              lookup_field='pk',
     #                                              view_name='api:author-detail')
-    author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
+    # بعنوان کلید در url به اشتباه آیدی مقاله را میدهد نه آیدی نویسنده ی مقاله پس وارد پروفایل نویسنده نمیشود
+    # author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
 
+    # نمایش یوزر نیم نویسنده برای فیلد author
+    author = serializers.CharField(source='author.username', read_only=True)
     class Meta:
         model = Article
         # fields = '__all__'

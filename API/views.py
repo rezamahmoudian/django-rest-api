@@ -128,6 +128,7 @@ class UserListView(ListCreateAPIView):
 #         return Response(status=204)
 
 
+# ویو برای هایپرلینک بین سریالایزر مقاله و نویسنده مقاله
 class AuthorRetrieveView(RetrieveAPIView):
     queryset = get_user_model().objects.all()
     # queryset = get_user_model().objects.filter(is_staff=True)

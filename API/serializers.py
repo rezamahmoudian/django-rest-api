@@ -3,6 +3,7 @@ from .models import Course, Article
 # from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 class AuthorSerializers(serializers.HyperlinkedModelSerializer):
@@ -38,7 +39,9 @@ class ArticleSerializers(serializers.ModelSerializer):
 
     # نمایش اطلاعت نویسنده با serializermethodfield ک بهترین روش است چون میتوان همه ی روش های بالا را با آن انجام داد
     def get_author(self, obj):
-        return obj.author.username
+        author = [obj.author.id]
+        return reverse('api:author-detail', args=author)
+        # return obj.author.username
     author = serializers.SerializerMethodField("get_author")
 
     class Meta:
